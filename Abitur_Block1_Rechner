@@ -2,7 +2,7 @@
 print("\nMeine Hauptfaecher sind: Mathematik, Deutsch, Englisch, Sport, Religion und Pflanzenphysiologie")
 print("Meine Nebenfaecher sind: Biologie, Chemie, Geschichte, Politik, Kunst und Wirtschaft und Recht\n")
 
-hauptfaecher = input("Nennen Sie alle Ihre Hauptfaecher (mit Komma und Leerzeichen getrennt): ").split(", ")
+hauptfaecher = input("Nennen Sie alle Ihre Hauptfaecher und ihr W-Seminar (mit Komma und Leerzeichen getrennt): ").split(", ")
 nebenfaecher = input("\nNennen Sie alle Ihre Nebenfaecher (mit Komma getrennt): ").split(", ")
 abgewaehlt = input("\nWelches Fach haben sie abgewaehlt?:")
 fach_zweitschlechteste_liste = []
