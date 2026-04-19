@@ -1,0 +1,101 @@
+#Idee: Erstellen eines Programms, welches meine Noten der Oberstufe abfragt und automatisch die bestmoegliche Punktzahl fuer mich berechnet.
+
+#Regeln: 
+# 1. Fuer jedes Abiturfach muessen alle 4 Halbjahre eingebracht werden. -> Mathe, Deutsch, Englisch, Sport und Religion
+# 2. Das W-Seminar besteht aus 2 Halbjahreseinbringungen und einer Gesamt Note bestehend aus Arbeit und Praesentation, insg. 4 Halbjahreseinbringungen
+# 3. Politik und Gesellschaft besteht nur aus 2 Halbjahreseinbringungen (Abgewaehlt) und nur die bessere Note muss genommen werden.
+# 4. In sonstigen Faechern muessen nur 3 von 4 Halbjahreseinbringungen eingebracht werden.
+
+# 5. Ein Joker kann genutzt werden: Das insgesamt zweitschlechteste Halbjahr der Nebenfaecher wird durch das insgesamt beste 
+#    schelchteste Halbjahr der Nebenfaecher ersetzt.
+
+# Bsp: (Vereinfachte Darstellung) Es gibt zwei Nebenfaecher (keines davon abgewaehlt), Chemie und Politik.
+# Chemie Punkte nach Halbjahren: 10 7 5 3 ;    Politik Punkte nach Halbjahren: 12 10 11 8
+# Joker: Chemie eingebrachte Halbjahre: 10 7 ;  Politik eingebrachte Halbjahre: 12 10 11 8 -> 5 von Chemie wird gestrichen und 8 von Politik verwendet
+
+
+print("\nMeine Hauptfaecher sind: Mathematik, Deutsch, Englisch, Sport, Religion und Pflanzenphysiologie")
+print("Meine Nebenfaecher sind: Biologie, Chemie, Geschichte, Politik, Kunst und Wirtschaft und Recht\n")
+
+hauptfaecher = input("Nennen Sie alle Ihre Hauptfaecher (mit Komma und Leerzeichen getrennt): ").split(", ")
+nebenfaecher = input("\nNennen Sie alle Ihre Nebenfaecher (mit Komma getrennt): ").split(", ")
+abgewaehlt = input("\nWelches Fach haben sie abgewaehlt?:")
+fach_zweitschlechteste_liste = []
+fach_schlecht_liste = []
+i = True
+
+faecher_uebrig = nebenfaecher + hauptfaecher
+nebenfaecher.remove(abgewaehlt)
+
+gesamtpunktzahl = 0
+
+
+while i:
+    print("\nGeben Sie 'stop' ein zum Beenden")
+
+    fach = input("Waehlen sie ein Fach aus: ")
+
+    if fach == "stop":
+        break
+
+    if fach in hauptfaecher:
+        fach_wahl = "hauptfach"
+    elif fach in nebenfaecher:
+        fach_wahl = "nebenfach"
+    elif fach in abgewaehlt:
+        fach_wahl = "abgewaehlt"
+    else:
+        print("Versuchen sie es erneut! Achten sie auf die richtige Gross- und Kleinschreibung")
+        continue                       #springt zurück zum Anfang
+
+    
+    if fach_wahl == "hauptfach":
+        fach1 = int(input(f"Punkte im 1.Halbjahr {fach}: "))
+        fach2 = int(input(f"Punkte im 2.Halbjahr {fach}: "))
+        fach3 = int(input(f"Punkte im 3.Halbjahr {fach}: "))
+        fach4 = int(input(f"Punkte im 4.Halbjahr {fach}: "))
+
+        fach_punkte = [fach1, fach2, fach3, fach4]
+        fach_ges = sum(fach_punkte)
+
+        gesamtpunktzahl += fach_ges
+        print(f"Insgesamte Anzahl an Punkten in {fach}: {fach_ges}")
+
+    
+    elif fach_wahl == "nebenfach":
+        fach1 = int(input(f"Punkte im 1.Halbjahr {fach}: "))
+        fach2 = int(input(f"Punkte im 2.Halbjahr {fach}: "))
+        fach3 = int(input(f"Punkte im 3.Halbjahr {fach}: "))
+        fach4 = int(input(f"Punkte im 4.Halbjahr {fach}: "))
+        
+        fach_punkte = [fach1, fach2, fach3, fach4]
+        fach_schlecht = sorted(fach_punkte)[0]
+        fach_schlecht_liste.append(fach_schlecht)
+        fach_zweitschlechteste = sorted(fach_punkte)[1]
+        fach_zweitschlechteste_liste.append(fach_zweitschlechteste)
+        fach_ges = sum(fach_punkte) - fach_schlecht
+         
+
+        gesamtpunktzahl += fach_ges
+        print(f"Insgesamte Anzahl an Punkten in {fach}: {fach_ges}")
+
+    elif fach_wahl == "abgewaehlt":
+        fach1 = int(input(f"Punkte im 1.Halbjahr {fach}: "))
+        fach2 = int(input(f"Punkte im 2.Halbjahr {fach}: "))
+
+        fach_punkte = [fach1, fach2]
+        fach_schlecht = sorted(fach_punkte)[0]
+        fach_ges = sum(fach_punkte) - fach_schlecht
+
+        gesamtpunktzahl += fach_ges
+        print(f"Insgesamte Anzahl an Punkten in {fach}: {fach_ges}")
+
+    if fach in faecher_uebrig:
+        faecher_uebrig.remove(fach)
+
+    if not faecher_uebrig:
+        i = False                   #while-Schleife endet, wenn alle Faecher abgefragt wurden
+
+if i == False:
+    print(f"Sie haben Insgesamt: {gesamtpunktzahl - min(fach_zweitschlechteste_liste) + max(fach_schlecht_liste)} Punkte erzielt")  
+    # Joker-Regel: Hier wird das niedrigste 2. schlechteste Halbjahr entfernt und dafuer das hoechste schlechtestes Halbjahr hinyugefuegt
